@@ -1,26 +1,496 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Electrical-themed color palette */
+  --electric-blue: #0066ff;
+  --electric-cyan: #00ccff;
+  --electric-yellow: #ffff00;
+  --electric-orange: #ff6600;
+  --electric-purple: #6600ff;
+  --electric-green: #00ff66;
+  
+  /* Professional base colors */
+  --deep-navy: #0f1729;
+  --dark-blue: #1a2742;
+  --medium-blue: #2d4875;
+  --steel-gray: #4a5568;
+  --warm-gray: #718096;
+  --light-gray: #e2e8f0;
+  --off-white: #f7fafc;
+  
+  /* Accent colors */
+  --gold: #ffd700;
+  --copper: #b87333;
+  --silver: #c0c0c0;
+  
+  /* Semantic colors */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  
+  /* Gradients */
+  --electric-gradient: linear-gradient(135deg, var(--electric-blue) 0%, var(--electric-cyan) 50%, var(--electric-purple) 100%);
+  --power-gradient: linear-gradient(45deg, var(--deep-navy) 0%, var(--dark-blue) 50%, var(--medium-blue) 100%);
+  --spark-gradient: linear-gradient(90deg, var(--electric-yellow) 0%, var(--electric-orange) 100%);
+  
+  /* Typography */
+  --font-display: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  
+  /* Shadows */
+  --shadow-glow: 0 0 20px rgba(0, 102, 255, 0.3);
+  --shadow-electric: 0 0 30px rgba(0, 204, 255, 0.4);
+  --shadow-deep: 0 25px 50px -12px rgba(15, 23, 41, 0.25);
+  --shadow-card: 0 10px 25px -3px rgba(15, 23, 41, 0.1), 0 4px 6px -2px rgba(15, 23, 41, 0.05);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--off-white);
+  --color-foreground: var(--deep-navy);
+  --font-sans: var(--font-body);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Custom animations */
+@keyframes electricPulse {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(0, 102, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 102, 255, 0.8), 0 0 30px rgba(0, 204, 255, 0.4);
   }
 }
 
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    text-shadow: 0 0 5px rgba(0, 102, 255, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(0, 102, 255, 0.8), 0 0 30px rgba(0, 204, 255, 0.6);
+  }
+}
+
+@keyframes floatUp {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Base styles */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--off-white);
+  color: var(--deep-navy);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  font-weight: 400;
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(0, 102, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(0, 204, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(102, 0, 255, 0.05) 0%, transparent 50%);
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+
+/* Enhanced typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  color: var(--deep-navy);
+}
+
+h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  background: var(--electric-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: glow 3s ease-in-out infinite;
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  position: relative;
+}
+
+h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background: var(--spark-gradient);
+  border-radius: 2px;
+}
+
+h3 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  color: var(--electric-blue);
+}
+
+p {
+  font-size: 1.125rem;
+  color: var(--steel-gray);
+  margin-bottom: 1.5rem;
+}
+
+/* Button styles */
+.btn-primary {
+  background: var(--electric-gradient);
+  color: white;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow), var(--shadow-deep);
+  animation: electricPulse 2s infinite;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.5s;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--electric-blue);
+  border: 2px solid var(--electric-blue);
+  font-weight: 600;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-secondary:hover {
+  background: var(--electric-blue);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Card styles */
+.electric-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(0, 102, 255, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.electric-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--electric-gradient);
+}
+
+.electric-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-electric), var(--shadow-deep);
+  border-color: var(--electric-blue);
+}
+
+.electric-card:hover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(0, 102, 255, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Navigation styles */
+.nav-electric {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0, 102, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(15, 23, 41, 0.08);
+}
+
+.nav-link {
+  color: var(--steel-gray);
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: var(--electric-blue);
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--electric-gradient);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Hero section */
+.hero-electric {
+  background: var(--power-gradient);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-electric::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(0, 204, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(255, 255, 0, 0.1) 0%, transparent 50%);
+  animation: floatUp 6s ease-in-out infinite;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Service icons */
+.service-icon {
+  width: 4rem;
+  height: 4rem;
+  background: var(--electric-gradient);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-card);
+}
+
+.service-icon:hover {
+  animation: sparkle 2s infinite;
+  box-shadow: var(--shadow-electric);
+}
+
+/* Footer styles */
+.footer-electric {
+  background: var(--deep-navy);
+  color: white;
+  position: relative;
+}
+
+.footer-electric::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--electric-gradient);
+}
+
+/* Utility classes */
+.text-electric {
+  color: var(--electric-blue);
+}
+
+.text-gradient {
+  background: var(--electric-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-electric {
+  background: var(--electric-gradient);
+}
+
+.animate-slide-up {
+  animation: slideInUp 0.6s ease-out forwards;
+}
+
+.animate-slide-right {
+  animation: slideInRight 0.6s ease-out forwards;
+}
+
+.animate-float {
+  animation: floatUp 4s ease-in-out infinite;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+  
+  h2 {
+    font-size: 2rem;
+  }
+  
+  .btn-primary,
+  .btn-secondary {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .electric-card {
+    padding: 1.5rem;
+  }
+}
+
+/* Color contrast improvements */
+.text-electric-blue {
+  color: #0052cc; /* Better contrast ratio */
+}
+
+/* Focus styles for accessibility */
+*:focus {
+  outline: 2px solid var(--electric-blue);
+  outline-offset: 2px;
+}
+
+.btn-primary:focus,
+.btn-secondary:focus,
+.nav-link:focus {
+  outline: 3px solid var(--electric-yellow);
+  outline-offset: 2px;
+}
+
+/* Skip to main content link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: var(--deep-navy);
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 1000;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --electric-blue: #0052cc;
+    --steel-gray: #1a1a1a;
+    --deep-navy: #000000;
+    --warm-gray: #4a4a4a;
+  }
+  
+  .electric-card {
+    border: 3px solid var(--electric-blue);
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: #000000;
+  }
+  
+  .nav-link {
+    color: #1a1a1a;
+  }
+  
+  .nav-link:hover {
+    color: #0052cc;
+    background-color: rgba(0, 82, 204, 0.1);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

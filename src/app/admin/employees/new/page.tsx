@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { supabase, getServiceSupabase } from '@/lib/supabase'
+import { supabase } from '@/lib/supabase'
 
 export default function NewEmployeePage() {
   const router = useRouter()
@@ -68,7 +68,7 @@ export default function NewEmployeePage() {
       }
 
       // Then create the employee record
-      const { data: employeeData, error: employeeError } = await supabase
+      const { error: employeeError } = await supabase
         .from('employees')
         .insert({
           user_id: userData.id,
@@ -345,7 +345,7 @@ export default function NewEmployeePage() {
             <div className="md:col-span-1">
               <h3 className="text-lg font-medium leading-6 text-gray-900">Address</h3>
               <p className="mt-1 text-sm text-gray-500">
-                Employee's home address information.
+                Employee&apos;s home address information.
               </p>
             </div>
             <div className="mt-5 md:mt-0 md:col-span-2">

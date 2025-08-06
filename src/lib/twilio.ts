@@ -69,10 +69,12 @@ export const formatPhoneNumber = (phone: string): string => {
   return `+1${digits}`
 }
 
-export default {
+const twilioUtils = {
   getTwilioClient,
   isTwilioConfigured,
   getTwilioPhoneNumber,
   validatePhoneNumber,
   formatPhoneNumber
 }
+
+export default twilioUtils

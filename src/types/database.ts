@@ -393,7 +393,7 @@ export type Database = {
           name: string
           notification_type: 'appointment_confirmation' | 'appointment_reminder' | 'quote_followup' | 'emergency_response' | 'status_update'
           content: string
-          variables: any
+          variables: Record<string, string> | null
           active: boolean
           created_at: string
           updated_at: string
@@ -403,7 +403,7 @@ export type Database = {
           name: string
           notification_type: 'appointment_confirmation' | 'appointment_reminder' | 'quote_followup' | 'emergency_response' | 'status_update'
           content: string
-          variables?: any
+          variables?: Record<string, string> | null
           active?: boolean
           created_at?: string
           updated_at?: string
@@ -413,7 +413,7 @@ export type Database = {
           name?: string
           notification_type?: 'appointment_confirmation' | 'appointment_reminder' | 'quote_followup' | 'emergency_response' | 'status_update'
           content?: string
-          variables?: any
+          variables?: Record<string, string> | null
           active?: boolean
           created_at?: string
           updated_at?: string

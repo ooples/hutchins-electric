@@ -10,7 +10,7 @@ export default function Home() {
           <div className="hero-content text-center animate-slide-up">
             <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium text-white mb-8 animate-float">
               <Zap className="w-4 h-4 mr-2 text-yellow-300" aria-hidden="true" />
-              Vermont's Most Trusted Electrician
+              Vermont&apos;s Most Trusted Electrician
             </div>
             <h1 className="mb-6">
               24/7 Emergency Electrician
@@ -76,7 +76,7 @@ export default function Home() {
                 <Clock className="h-8 w-8" aria-hidden="true" />
               </div>
               <h3 className="text-xl font-bold mb-3">24/7 Emergency Service</h3>
-              <p className="text-gray-600 leading-relaxed">Available round the clock for electrical emergencies. No job too big or small - we're here when you need us most.</p>
+              <p className="text-gray-600 leading-relaxed">Available round the clock for electrical emergencies. No job too big or small - we&apos;re here when you need us most.</p>
             </div>
             
             <div className="text-center group">
@@ -223,7 +223,7 @@ export default function Home() {
               Ready to Power Up Your Property?
             </h2>
             <p className="text-xl text-blue-100 mb-10 max-w-3xl mx-auto leading-relaxed">
-              Don't wait for electrical problems to get worse. Get expert help today with transparent pricing, 
+              Don&apos;t wait for electrical problems to get worse. Get expert help today with transparent pricing, 
               professional service, and guaranteed satisfaction.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
@@ -298,7 +298,7 @@ export default function Home() {
           
           <div className="text-center mt-12">
             <p className="text-lg text-gray-600 mb-6">
-              Don't see your area listed? <span className="text-electric-blue font-semibold">We travel!</span>
+              Don&apos;t see your area listed? <span className="text-electric-blue font-semibold">We travel!</span>
             </p>
             <Link
               href="/quote"

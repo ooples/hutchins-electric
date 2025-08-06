@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { Database } from '@/types/database'
 
@@ -24,17 +24,8 @@ interface WeekData {
 export default function EmployeeSchedule() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [employeeId, setEmployeeId] = useState<string | null>(null)
   const [currentWeek, setCurrentWeek] = useState(0) // 0 = this week, 1 = next week, etc.
   const [weekData, setWeekData] = useState<WeekData | null>(null)
-
-  useEffect(() => {
-    const empId = localStorage.getItem('employee_id')
-    if (empId) {
-      setEmployeeId(empId)
-      fetchScheduleData(empId, currentWeek)
-    }
-  }, [currentWeek])
 
   const getWeekStart = (weekOffset: number) => {
     const today = new Date()
@@ -45,7 +36,7 @@ export default function EmployeeSchedule() {
     return weekStart
   }
 
-  const fetchScheduleData = async (empId: string, weekOffset: number) => {
+  const fetchScheduleData = useCallback(async (empId: string, weekOffset: number) => {
     try {
       setLoading(true)
       setError('')
@@ -137,7 +128,14 @@ export default function EmployeeSchedule() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    const empId = localStorage.getItem('employee_id')
+    if (empId) {
+      fetchScheduleData(empId, currentWeek)
+    }
+  }, [currentWeek, fetchScheduleData])
 
   const formatDate = (date: Date) => {
     return date.toLocaleDateString('en-US', {
@@ -239,11 +237,11 @@ export default function EmployeeSchedule() {
               month: 'long',
               day: 'numeric'
             })} - {
-              new Date(weekData?.weekStart.getTime() + 6 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', {
+              weekData ? new Date(weekData.weekStart.getTime() + 6 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', {
                 month: 'long',
                 day: 'numeric',
                 year: 'numeric'
-              })
+              }) : ''
             }
           </h2>
           {currentWeek === 0 && (

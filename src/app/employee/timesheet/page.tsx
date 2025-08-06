@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { Database } from '@/types/database'
 
@@ -37,15 +37,6 @@ export default function EmployeeTimesheet() {
     return () => clearInterval(timer)
   }, [])
 
-  useEffect(() => {
-    const empId = localStorage.getItem('employee_id')
-    if (empId) {
-      setEmployeeId(empId)
-      fetchTimeData(empId)
-      requestLocation()
-    }
-  }, [weekOffset])
-
   const requestLocation = () => {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
@@ -79,7 +70,7 @@ export default function EmployeeTimesheet() {
     return weekStart
   }
 
-  const fetchTimeData = async (empId: string) => {
+  const fetchTimeData = useCallback(async (empId: string) => {
     try {
       setLoading(true)
       setError('')
@@ -122,7 +113,16 @@ export default function EmployeeTimesheet() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [weekOffset])
+
+  useEffect(() => {
+    const empId = localStorage.getItem('employee_id')
+    if (empId) {
+      setEmployeeId(empId)
+      fetchTimeData(empId)
+      requestLocation()
+    }
+  }, [weekOffset, fetchTimeData])
 
   const handleClockIn = async () => {
     if (!employeeId) return
@@ -220,7 +220,7 @@ export default function EmployeeTimesheet() {
 
       const clockOutTime = new Date().toISOString()
       
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('time_entries')
         .update({
           clock_out: clockOutTime,

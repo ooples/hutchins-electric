@@ -4,9 +4,10 @@ import { getServiceSupabase } from '@/lib/supabase'
 // GET /api/employees/[id] - Get single employee
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const resolvedParams = await params
     const supabase = getServiceSupabase()
     
     const { data, error } = await supabase
@@ -20,7 +21,7 @@ export async function GET(
           created_at
         )
       `)
-      .eq('id', params.id)
+      .eq('id', resolvedParams.id)
       .single()
 
     if (error) {
@@ -44,9 +45,10 @@ export async function GET(
 // PUT /api/employees/[id] - Update employee
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const resolvedParams = await params
     const body = await request.json()
     const {
       email,
@@ -82,7 +84,7 @@ export async function PUT(
     const { data: currentEmployee, error: fetchError } = await supabase
       .from('employees')
       .select('user_id, employee_number')
-      .eq('id', params.id)
+      .eq('id', resolvedParams.id)
       .single()
 
     if (fetchError || !currentEmployee) {
@@ -98,7 +100,7 @@ export async function PUT(
         .from('employees')
         .select('id')
         .eq('employee_number', employee_number)
-        .neq('id', params.id)
+        .neq('id', resolvedParams.id)
         .single()
 
       if (existingEmployee) {
@@ -146,7 +148,7 @@ export async function PUT(
         zip_code: zip_code || null,
         notes: notes || null
       })
-      .eq('id', params.id)
+      .eq('id', resolvedParams.id)
       .select(`
         *,
         users (
@@ -179,16 +181,17 @@ export async function PUT(
 // DELETE /api/employees/[id] - Deactivate employee (soft delete)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const resolvedParams = await params
     const supabase = getServiceSupabase()
 
     // Instead of hard delete, we deactivate the employee
     const { data, error } = await supabase
       .from('employees')
       .update({ is_active: false })
-      .eq('id', params.id)
+      .eq('id', resolvedParams.id)
       .select()
       .single()
 

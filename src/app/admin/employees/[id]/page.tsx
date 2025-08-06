@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, use } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
@@ -10,8 +10,9 @@ type Employee = Database['public']['Tables']['employees']['Row'] & {
   users?: Database['public']['Tables']['users']['Row']
 }
 
-export default function EditEmployeePage({ params }: { params: { id: string } }) {
+export default function EditEmployeePage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter()
+  const resolvedParams = use(params)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
@@ -38,25 +39,22 @@ export default function EditEmployeePage({ params }: { params: { id: string } })
   })
 
   useEffect(() => {
-    fetchEmployee()
-  }, [params.id])
-
-  const fetchEmployee = async () => {
-    try {
-      setLoading(true)
-      const { data, error } = await supabase
-        .from('employees')
-        .select(`
-          *,
-          users (
-            id,
-            email,
-            role,
-            created_at
-          )
-        `)
-        .eq('id', params.id)
-        .single()
+    const fetchEmployee = async () => {
+      try {
+        setLoading(true)
+        const { data, error } = await supabase
+          .from('employees')
+          .select(`
+            *,
+            users (
+              id,
+              email,
+              role,
+              created_at
+            )
+          `)
+          .eq('id', resolvedParams.id)
+          .single()
 
       if (error) {
         console.error('Error fetching employee:', error)
@@ -98,6 +96,9 @@ export default function EditEmployeePage({ params }: { params: { id: string } })
       setLoading(false)
     }
   }
+  
+  fetchEmployee()
+  }, [resolvedParams.id])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target
@@ -148,7 +149,7 @@ export default function EditEmployeePage({ params }: { params: { id: string } })
           zip_code: formData.zip_code || null,
           notes: formData.notes || null
         })
-        .eq('id', params.id)
+        .eq('id', resolvedParams.id)
 
       if (employeeError) {
         console.error('Error updating employee:', employeeError)
@@ -192,7 +193,7 @@ export default function EditEmployeePage({ params }: { params: { id: string } })
         <div className="text-center py-12">
           <h3 className="mt-2 text-sm font-medium text-gray-900">Employee not found</h3>
           <p className="mt-1 text-sm text-gray-500">
-            The employee you're looking for doesn't exist or has been removed.
+            The employee you&apos;re looking for doesn&apos;t exist or has been removed.
           </p>
           <div className="mt-6">
             <Link
@@ -463,7 +464,7 @@ export default function EditEmployeePage({ params }: { params: { id: string } })
             <div className="md:col-span-1">
               <h3 className="text-lg font-medium leading-6 text-gray-900">Address</h3>
               <p className="mt-1 text-sm text-gray-500">
-                Employee's home address information.
+                Employee&apos;s home address information.
               </p>
             </div>
             <div className="mt-5 md:mt-0 md:col-span-2">

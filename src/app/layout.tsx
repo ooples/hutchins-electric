@@ -193,7 +193,7 @@ export default function RootLayout({
                   <h3 className="text-xl font-bold">Hutchins Electric</h3>
                 </div>
                 <p className="text-gray-300 leading-relaxed mb-6">
-                  Vermont's trusted electrical contractor, serving Northern & Central Vermont with professional, 
+                  Vermont&apos;s trusted electrical contractor, serving Northern & Central Vermont with professional, 
                   reliable service since day one. Licensed, insured, and available 24/7.
                 </p>
                 <div className="flex items-center space-x-4">

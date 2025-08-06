@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
 
     // Update SMS log in database
     if (messageSid) {
-      const updateData: any = { status }
+      const updateData: { status: string; delivered_at?: string; error_message?: string } = { status }
       
       // Set delivery timestamp for successful deliveries
       if (status === 'delivered') {
